@@ -6,14 +6,24 @@
         <img src="../assets/logo.png" alt srcset />
       </div>
       <!-- 登陆表单区域 -->
-      <el-form label-width="0px" :rules="rules" ref="loginFormRef" :model="loginForm" class="login_form">
+      <el-form
+        label-width="0px"
+        :rules="rules"
+        ref="loginFormRef"
+        :model="loginForm"
+        class="login_form"
+      >
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input prefix-icon="iconfont icon-3702mima" v-model="loginForm.password" type="password"></el-input>
+          <el-input
+            prefix-icon="iconfont icon-3702mima"
+            v-model="loginForm.password"
+            type="password"
+          ></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
@@ -52,11 +62,11 @@ export default {
   },
   methods: {
     //   点击重置按钮,重置登陆表单
-    resetLogin() {
+    resetLogin () {
       this.$refs.loginFormRef.resetFields()
     },
     //  用户登陆
-    login() {
+    login () {
       // 表单预验证
       this.$refs.loginFormRef.validate(async valid => {
         // 如果valid的值为false,return,
@@ -66,13 +76,13 @@ export default {
         // 如果valid的值为true,执行下面操作
         const { data: res } = await this.$http.post('login', this.loginForm)
         if (res.meta.status !== 200) {
-          return this.$message.error("登陆失败");
+          return this.$message.error('登陆失败')
         }
-       this.$message.success("登陆成功");
-       console.log(res);
+        this.$message.success('登陆成功')
+        console.log(res)
         // 本地浏览器存储token
-       window.sessionStorage.setItem('token',res.data.token);
-       this.$router.push('/home')
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
       })
     }
   }
