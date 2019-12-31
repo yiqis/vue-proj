@@ -34,10 +34,10 @@
     </div>
   </div>
 </template>
-
 <script>
+import unit from './utill/index.js'
 export default {
-  data() {
+  data () {
     return {
       // 这是登陆表单的数据绑定对象
       loginForm: {
@@ -61,7 +61,7 @@ export default {
     }
   },
   methods: {
-    //   点击重置按钮,重置登陆表单
+    // 点击重置按钮,重置登陆表单
     resetLogin () {
       this.$refs.loginFormRef.resetFields()
     },
@@ -79,10 +79,12 @@ export default {
           return this.$message.error('登陆失败')
         }
         this.$message.success('登陆成功')
-        console.log(res)
-        // 本地浏览器存储token
-        window.sessionStorage.setItem('token', res.data.token)
-        this.$router.push('/home')
+        // console.log(res)
+        // // 本地浏览器存储token
+        // window.sessionStorage.setItem('token', res.data.token)
+        // this.$router.push('/home')
+        unit.session('token', res.data.token)
+        unit.$path(this, 'home')
       })
     }
   }
