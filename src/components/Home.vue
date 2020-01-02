@@ -32,7 +32,12 @@
               <!-- 文本 -->
               <span>{{item.authName}}</span>
             </template>
-            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" @click="saveNavState('/'+subItem.path)">
+            <el-menu-item
+              :index="'/'+subItem.path"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+              @click="saveNavState('/'+subItem.path)"
+            >
               <i class="el-icon-menu"></i>
               <span>{{subItem.authName}}</span>
             </el-menu-item>
@@ -86,6 +91,7 @@ export default {
     // 保存连接的激活状态
     saveNavState(activePath) {
       window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }
