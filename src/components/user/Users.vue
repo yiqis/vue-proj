@@ -40,10 +40,26 @@
         </el-table-column>
         <el-table-column label="操作" width="200px">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="modifyInfo(scope.row.id)"></el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteInfo(scope.row.id)"></el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="modifyInfo(scope.row.id)"
+            ></el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="deleteInfo(scope.row.id)"
+            ></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini" :id="scope.row.id" @click="setRole(scope.row)"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                size="mini"
+                :id="scope.row.id"
+                @click="setRole(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -61,50 +77,67 @@
       <!-- 对话提示框 -->
       <el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%" @close="closeForm">
         <!-- 内容 -->
-       <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserForm" label-width="80px" >
+        <el-form
+          :model="addUserForm"
+          :rules="addUserFormRules"
+          ref="addUserForm"
+          label-width="80px"
+        >
           <el-form-item label="用户名称" prop="username">
             <el-input v-model="addUserForm.username" :disabled="flag"></el-input>
           </el-form-item>
-           <el-form-item label="密码" prop="password" v-if="!flag">
+          <el-form-item label="密码" prop="password" v-if="!flag">
             <el-input v-model="addUserForm.password"></el-input>
           </el-form-item>
-           <el-form-item label="邮箱" prop="email">
+          <el-form-item label="邮箱" prop="email">
             <el-input v-model="addUserForm.email"></el-input>
           </el-form-item>
-           <el-form-item label="手机" prop="mobile">
+          <el-form-item label="手机" prop="mobile">
             <el-input v-model="addUserForm.mobile"></el-input>
           </el-form-item>
-       </el-form>
-          <!-- 底部 -->
+        </el-form>
+        <!-- 底部 -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="addUserInfo">确 定</el-button>
         </span>
       </el-dialog>
     </el-card>
+    <!-- 添加角色 -->
+    <el-dialog title="添加角色" :visible.sync="dialogVisible" width="50%">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 分配角色的对话框 -->
     <el-dialog
-  title="分配角色"
-  :visible.sync="setRoleDialogVisible"
-  width="50%"
-  @close='setRoleDialogClosed'>
-  <div>
-    <p>当前的用户 :{{userInfo.username}}</p>
-    <p>当前的角色 :{{userInfo.role_name}}</p>
-    <p>分配新角色 :<el-select v-model="selectedRoleId" placeholder="请选择">
-    <el-option
-      v-for="item in rolesList"
-      :key="item.id"
-      :label="item.roleName"
-      :value="item.id">
-    </el-option>
-  </el-select></p>
-  </div>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="setRoleDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
-  </span>
-</el-dialog>
+      title="分配角色"
+      :visible.sync="setRoleDialogVisible"
+      width="50%"
+      @close="setRoleDialogClosed"
+    >
+      <div>
+        <p>当前的用户 :{{userInfo.username}}</p>
+        <p>当前的角色 :{{userInfo.role_name}}</p>
+        <p>
+          分配新角色 :
+          <el-select v-model="selectedRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -235,7 +268,10 @@ export default {
       if (this.flag) {
         this.$refs.addUserForm.validate(async config => {
           if (config) {
-            const { data: ref } = await this.$http.put(`users/${this.userId}`, this.addUserForm)
+            const { data: ref } = await this.$http.put(
+              `users/${this.userId}`,
+              this.addUserForm
+            )
             if (ref.meta.status === 200) {
               // 修改用户成功
               this.dialogVisible = false
@@ -251,7 +287,10 @@ export default {
         // 添加
         this.$refs.addUserForm.validate(async config => {
           if (config) {
-            const { data: ref } = await this.$http.post('/users', this.addUserForm)
+            const { data: ref } = await this.$http.post(
+              '/users',
+              this.addUserForm
+            )
             if (ref.meta.status === 201) {
               // 用户添加成功
               this.dialogVisible = false
@@ -281,11 +320,15 @@ export default {
     // 删除单个用户
     async deleteInfo(id) {
       // 此处如果点击确定,deleteUserById的值为confirm
-      const deleteUserById = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).catch(() => {
+      const deleteUserById = await this.$confirm(
+        '此操作将永久删除该用户, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(() => {
         // 删除失败的时候执行
         this.$message({
           type: 'info',
@@ -323,7 +366,10 @@ export default {
       if (!this.selectedRoleId) {
         return this.$message.error('请选择要分配的角色')
       }
-      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        { rid: this.selectedRoleId }
+      )
       if (res.meta.status === 200) {
         this.getUserList()
         this.setRoleDialogVisible = false
