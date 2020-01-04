@@ -157,7 +157,6 @@ export default {
         // 为总条数赋值
         this.total = res.data.total
         this.$message.success('获取商品分类成功')
-        // console.log(this.cateList)
       } else {
         this.$message.error('获取商品分类失败')
       }
@@ -181,11 +180,9 @@ export default {
     async getParentCateList() {
       const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
       this.parentCateList = res.data
-      console.log(this.parentCateList)
     },
     // 选择项发生变化触发这个函数
     parentCateChange() {
-      console.log(this.selectedKeys)
       if (this.selectedKeys.length > 0) {
         // 父级分类的id
         this.addCateForm.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
@@ -203,7 +200,6 @@ export default {
       this.$refs.addCateFormRef.validate(async config => {
         if (config) {
           const { data: res } = await this.$http.post('categories', this.addCateForm)
-          console.log(res)
           if (res.meta.status === 201) {
             this.getCateList()
             this.addCateDialogVisible = false
@@ -213,7 +209,6 @@ export default {
           }
         }
       })
-      console.log(this.addCateForm)
     },
     // 关闭添加分类对话框
     addCateDialogClosed() {
