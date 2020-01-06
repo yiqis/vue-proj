@@ -54,7 +54,12 @@
       ></page>
     </el-card>
     <!-- 点击添加对话框 -->
-    <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="50%" @close='addCateDialogClosed'>
+    <el-dialog
+      title="添加分类"
+      :visible.sync="addCateDialogVisible"
+      width="50%"
+      @close="addCateDialogClosed"
+    >
       <!-- 对话框主体内容 -->
       <el-form
         :model="addCateForm"
@@ -66,7 +71,14 @@
           <el-input v-model="addCateForm.cat_name"></el-input>
         </el-form-item>
         <el-form-item label="父级分类">
-            <el-cascader expandTrigger='hover' v-model="selectedKeys" :options="parentCateList" :props="cascadeProps" @change="parentCateChange" clearable></el-cascader>
+          <el-cascader
+            expandTrigger="hover"
+            v-model="selectedKeys"
+            :options="parentCateList"
+            :props="cascadeProps"
+            @change="parentCateChange"
+            clearable
+          ></el-cascader>
         </el-form-item>
       </el-form>
       <!-- 对话框底部 -->
@@ -127,8 +139,10 @@ export default {
       },
       // 添加分类的表单验证规则
       addCateFormRules: {
-        cat_name: [ { required: true, message: '请输入分类名称', trigger: 'blur' } ],
-        cat_pid: [ { required: true, message: '请输入分类id', trigger: 'blur' } ]
+        cat_name: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' }
+        ],
+        cat_pid: [{ required: true, message: '请输入分类id', trigger: 'blur' }]
       },
       // 父级分类的列表
       parentCateList: [],
@@ -178,7 +192,9 @@ export default {
     },
     // 获取父级分类的数据列表
     async getParentCateList() {
-      const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
+      const { data: res } = await this.$http.get('categories', {
+        params: { type: 2 }
+      })
       this.parentCateList = res.data
     },
     // 选择项发生变化触发这个函数
@@ -199,7 +215,10 @@ export default {
     addCate() {
       this.$refs.addCateFormRef.validate(async config => {
         if (config) {
-          const { data: res } = await this.$http.post('categories', this.addCateForm)
+          const { data: res } = await this.$http.post(
+            'categories',
+            this.addCateForm
+          )
           if (res.meta.status === 201) {
             this.getCateList()
             this.addCateDialogVisible = false

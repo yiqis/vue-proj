@@ -24,3 +24,12 @@ body,
 .el-cascader-menu__wrap {
     height: 200px !important;
 }
+.el-steps {
+    margin: 15px 0;
+}
+.el-step__title {
+    font-size: 13px;
+}
+.quill-editor {
+    height: 300px;
+}
