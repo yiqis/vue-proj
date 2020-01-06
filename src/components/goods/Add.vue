@@ -303,8 +303,8 @@ export default {
           `goods/${this.$route.query.id}`
         )
         this.addForm = res.data
-        console.log(this.addForm)
-        console.log(res.data)
+        this.addForm.goods_cat = res.data.goods_cat.split(',')
+        console.log(this.addForm.goods_cat)
       }
     }
   },
