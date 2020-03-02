@@ -17,7 +17,7 @@
       <!-- 角色列表区域 -->
       <el-row>
         <el-col>
-          <el-table :data="roleList" stripe row-key='id' :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+          <el-table :data="roleList" stripe row-key='index' :tree-props="{children: 'childrens', hasChildren: 'hasChildren'}">
             <el-table-column type="expand" label="展开">
               <template slot-scope="scope">
                 <el-row

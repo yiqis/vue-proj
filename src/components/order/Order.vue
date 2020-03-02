@@ -87,7 +87,7 @@
           :timestamp="activity.time"
         >{{activity.context}}</el-timeline-item>
       </el-timeline>
-    </el-dialog>-
+    </el-dialog>
   </div>
 </template>
 <script>
