@@ -37,7 +37,7 @@
 <script>
 import unit from './utill/index.js'
 export default {
-  data () {
+  data() {
     return {
       // 这是登陆表单的数据绑定对象
       loginForm: {
@@ -49,24 +49,18 @@ export default {
         password: ''
       },
       rules: {
-        username: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
-        ]
+        username: [{ required: true, message: '请输入用户名称', trigger: 'blur' }, { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }]
       }
     }
   },
   methods: {
     // 点击重置按钮,重置登陆表单
-    resetLogin () {
+    resetLogin() {
       this.$refs.loginFormRef.resetFields()
     },
     //  用户登陆
-    login () {
+    login() {
       // 表单预验证
       this.$refs.loginFormRef.validate(async valid => {
         // 如果valid的值为false,return,

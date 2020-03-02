@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <!-- 面包屑导航区域 -->
+  <div>
+    <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
@@ -21,13 +21,13 @@
         </el-table-column>
       </el-table>
     </el-card>
-    </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-    // 权限列表
+      // 权限列表
       rightsList: []
     }
   },
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async getRightList() {
-    // 获取用户权限列表
+      // 获取用户权限列表
       const { data: res } = await this.$http.get('rights/list')
       if (res.meta.status === 200) {
         this.$message.success('用户权限列表获取成功')
@@ -45,8 +45,6 @@ export default {
         this.$message.error('用户权限列表获取失败')
       }
       this.rightsList = res.data
-      console.log(res)
-      console.log(this.rightsList)
     }
   }
 }

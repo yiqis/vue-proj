@@ -27,12 +27,10 @@ export default {
     handleSizeChange(newsize) {
       this.queryInfo.pagesize = newsize
       this.$emit('handleSizeChange', this.queryInfo.pagesize)
-      // console.log(this.queryInfo)
     },
     handleCurrentChange(current) {
       this.queryInfo.pagenum = current
       this.$emit('handleCurrentChange', this.queryInfo.pagenum)
-      // console.log(this.queryInfo)
     }
   }
 }

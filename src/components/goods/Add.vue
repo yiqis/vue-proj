@@ -128,18 +128,10 @@ export default {
         attrs: []
       },
       addFormRules: {
-        goods_name: [
-          { required: true, message: '请输入商品名称', trigger: 'blur' }
-        ],
-        goods_price: [
-          { required: true, message: '请输入商品价格', trigger: 'blur' }
-        ],
-        goods_weight: [
-          { required: true, message: '请输入商品重量', trigger: 'blur' }
-        ],
-        goods_number: [
-          { required: true, message: '请输入商品数量', trigger: 'blur' }
-        ],
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
         goods_cat: [
           {
             required: true,
@@ -200,31 +192,23 @@ export default {
     async tabClicked() {
       // 证明访问的是动态参数列表
       if (this.activeIndex === '1') {
-        const { data: res } = await this.$http.get(
-          `categories/${this.cateId}/attributes`,
-          {
-            params: {
-              sel: 'many'
-            }
+        const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+          params: {
+            sel: 'many'
           }
-        )
+        })
         this.manyTableData = res.data
         res.data.forEach(item => {
-          item.attr_vals =
-            item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+          item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
         })
       } else if (this.activeIndex === '2') {
-        const { data: res } = await this.$http.get(
-          `categories/${this.cateId}/attributes`,
-          {
-            params: {
-              sel: 'only'
-            }
+        const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+          params: {
+            sel: 'only'
           }
-        )
+        })
         if (res.meta.status === 200) {
           this.onlyTableData = res.data
-          console.log(this.onlyTableData)
         } else {
           this.$message.error('静态参数列表获取失败')
         }
@@ -232,16 +216,13 @@ export default {
     },
     // 处理图片预览效果
     handlePreview(file) {
-      console.log(file)
       this.previewVisible = true
       this.previewPath = file.url
-      console.log(this.previewPath)
     },
     // 处理移除图片的方法
     handleRemove(file) {
       const filePath = file.response.data.tmp_path
       const i = this.addForm.pics.findIndex(x => x.pic === filePath)
-      console.log(i)
       this.addForm.pics.splice(i, 1)
     },
     // 监听图片上传成功的事件
@@ -251,28 +232,28 @@ export default {
     },
     // 添加商品
     async add() {
-      if (location.hash === '#/goods/add') {
-        this.$refs.addFormRulesRef.validate(async config => {
-          if (config) {
-            const form = _.cloneDeep(this.addForm)
-            form.goods_cat = form.goods_cat.join(',')
-            // 处理动态参数
-            this.manyTableData.forEach(item => {
-              const newInfo = {
-                attr_id: item.attr_id,
-                attr_value: item.attr_vals.join(' ')
-              }
-              this.addForm.attrs.push(newInfo)
-            })
-            // 处理静态属性
-            this.onlyTableData.forEach(item => {
-              const newInfo = {
-                attr_id: item.attr_id,
-                attr_value: item.attr_vals
-              }
-              this.addForm.attrs.push(newInfo)
-            })
-            form.attrs = this.addForm.attrs
+      this.$refs.addFormRulesRef.validate(async config => {
+        if (config) {
+          const form = _.cloneDeep(this.addForm)
+          form.goods_cat = form.goods_cat.join(',')
+          // 处理动态参数
+          this.manyTableData.forEach(item => {
+            const newInfo = {
+              attr_id: item.attr_id,
+              attr_value: item.attr_vals.join(' ')
+            }
+            this.addForm.attrs.push(newInfo)
+          })
+          // 处理静态属性
+          this.onlyTableData.forEach(item => {
+            const newInfo = {
+              attr_id: item.attr_id,
+              attr_value: item.attr_vals
+            }
+            this.addForm.attrs.push(newInfo)
+          })
+          form.attrs = this.addForm.attrs
+          if (location.hash === '#/goods/add') {
             // 发起请求,添加商品
             const { data: res } = await this.$http.post('goods', form)
             if (res.meta.status !== 201) {
@@ -281,30 +262,28 @@ export default {
               this.$router.push('/goods')
             }
           } else {
-            this.$message.error('请填写必要的表单项')
+            // 编辑提交
+            const { data: res } = await this.$http.put(`goods/${this.$route.query.id}`, form)
+            console.log(res)
+            this.$router.push('/goods')
           }
-        })
-      } else {
-        // 编辑提交
-        const { data: res } = await this.$http.put(
-          `goods/${this.$route.query.id}`,
-          this.addForm
-        )
-        console.log(res)
-        this.$router.push('/goods')
-      }
+        }
+      })
     },
     async edit() {
       const search = location.hash
       if (search === '#/goods/add') {
         return false
       } else {
-        const { data: res } = await this.$http.get(
-          `goods/${this.$route.query.id}`
-        )
+        const { data: res } = await this.$http.get(`goods/${this.$route.query.id}`)
         this.addForm = res.data
         this.addForm.goods_cat = res.data.goods_cat.split(',')
-        console.log(this.addForm.goods_cat)
+        const arr1 = []
+        res.data.goods_cat.forEach(item => {
+          arr1.push(Number(item))
+        })
+        this.addForm.goods_cat = arr1
+        console.log(this.addForm)
       }
     }
   },

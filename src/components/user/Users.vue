@@ -188,22 +188,10 @@ export default {
       flag: false,
       // 添加用户表单验证
       addUserFormRules: {
-        username: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入用户密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '请输入用户邮箱', trigger: 'blur' },
-          { validator: checkEmail, trigger: 'blur' }
-        ],
-        mobile: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { validator: checkMoblie, trigger: 'blur' }
-        ]
+        username: [{ required: true, message: '请输入用户名称', trigger: 'blur' }, { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入用户密码', trigger: 'blur' }, { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }],
+        email: [{ required: true, message: '请输入用户邮箱', trigger: 'blur' }, { validator: checkEmail, trigger: 'blur' }],
+        mobile: [{ required: true, message: '请输入手机号码', trigger: 'blur' }, { validator: checkMoblie, trigger: 'blur' }]
       },
       setRoleDialogVisible: false,
       // 需要被分配角色的用户信息
@@ -242,9 +230,7 @@ export default {
     },
     // 用户状态改变
     async userStateChange(userInfo) {
-      const { data: ref } = await this.$http.put(
-        `users/${userInfo.id}/state/${userInfo.mg_state}`
-      )
+      const { data: ref } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
       if (ref.meta.status === 200) {
         // 用户状态设置成功
         this.$message.success('用户状态设置成功')
@@ -268,10 +254,7 @@ export default {
       if (this.flag) {
         this.$refs.addUserForm.validate(async config => {
           if (config) {
-            const { data: ref } = await this.$http.put(
-              `users/${this.userId}`,
-              this.addUserForm
-            )
+            const { data: ref } = await this.$http.put(`users/${this.userId}`, this.addUserForm)
             if (ref.meta.status === 200) {
               // 修改用户成功
               this.dialogVisible = false
@@ -287,10 +270,7 @@ export default {
         // 添加
         this.$refs.addUserForm.validate(async config => {
           if (config) {
-            const { data: ref } = await this.$http.post(
-              '/users',
-              this.addUserForm
-            )
+            const { data: ref } = await this.$http.post('/users', this.addUserForm)
             if (ref.meta.status === 201) {
               // 用户添加成功
               this.dialogVisible = false
@@ -320,15 +300,11 @@ export default {
     // 删除单个用户
     async deleteInfo(id) {
       // 此处如果点击确定,deleteUserById的值为confirm
-      const deleteUserById = await this.$confirm(
-        '此操作将永久删除该用户, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch(() => {
+      const deleteUserById = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(() => {
         // 删除失败的时候执行
         this.$message({
           type: 'info',
@@ -357,7 +333,6 @@ export default {
       if (res.meta.status === 200) {
         this.$message.success('获取角色列表成功')
         this.rolesList = res.data
-        console.log(this.rolesList)
       }
       this.setRoleDialogVisible = true
     },
@@ -366,10 +341,7 @@ export default {
       if (!this.selectedRoleId) {
         return this.$message.error('请选择要分配的角色')
       }
-      const { data: res } = await this.$http.put(
-        `users/${this.userInfo.id}/role`,
-        { rid: this.selectedRoleId }
-      )
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
       if (res.meta.status === 200) {
         this.getUserList()
         this.setRoleDialogVisible = false

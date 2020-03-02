@@ -139,9 +139,7 @@ export default {
       },
       // 添加分类的表单验证规则
       addCateFormRules: {
-        cat_name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
-        ],
+        cat_name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
         cat_pid: [{ required: true, message: '请输入分类id', trigger: 'blur' }]
       },
       // 父级分类的列表
@@ -215,10 +213,7 @@ export default {
     addCate() {
       this.$refs.addCateFormRef.validate(async config => {
         if (config) {
-          const { data: res } = await this.$http.post(
-            'categories',
-            this.addCateForm
-          )
+          const { data: res } = await this.$http.post('categories', this.addCateForm)
           if (res.meta.status === 201) {
             this.getCateList()
             this.addCateDialogVisible = false

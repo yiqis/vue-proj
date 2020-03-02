@@ -12,7 +12,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-input placeholder="请输入内容" v-model="queryInfo.query">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="getOrderList"></el-button>
           </el-input>
         </el-col>
       </el-row>
@@ -115,12 +115,8 @@ export default {
       },
       //   收货地址验证
       addressFormRules: {
-        address1: [
-          { required: true, message: '请选择省市区县', trigger: 'blur' }
-        ],
-        address2: [
-          { required: true, message: '请选择省市区县', trigger: 'blur' }
-        ]
+        address1: [{ required: true, message: '请选择省市区县', trigger: 'blur' }],
+        address2: [{ required: true, message: '请选择省市区县', trigger: 'blur' }]
       },
       //   将导入的citiData保存起来
       cityData: cityData,
@@ -161,7 +157,6 @@ export default {
       this.progressVisible = true
       if (res.meta.status === 200) {
         this.progressInfo = res.data
-        console.log(this.progressInfo)
       } else {
         this.$message.error('物流进度信息获取失败')
       }

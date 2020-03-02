@@ -98,15 +98,11 @@ export default {
     },
     // 根据id删除商品
     async deleteGoods(row) {
-      const deleteConfirm = await this.$confirm(
-        '此操作将永久删除该商品, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch(err => err)
+      const deleteConfirm = await this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       if (deleteConfirm === 'confirm') {
         const { data: res } = await this.$http.delete(`goods/${row.goods_id}`)
         if (res.meta.status === 200) {
@@ -124,7 +120,6 @@ export default {
     },
     // 点击按钮编辑商品
     editGoods(row) {
-      console.log(row)
       this.$router.push({ path: '/goods/add', query: { id: row.goods_id } })
     }
   }

@@ -17,7 +17,7 @@
       <!-- 角色列表区域 -->
       <el-row>
         <el-col>
-          <el-table :data="roleList" stripe>
+          <el-table :data="roleList" stripe row-key='id' :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column type="expand" label="展开">
               <template slot-scope="scope">
                 <el-row
@@ -67,9 +67,14 @@
             <el-table-column type="index" label="索引"></el-table-column>
             <el-table-column prop="roleDesc" label="角色名称"></el-table-column>
             <el-table-column prop="roleName" label="角色描述"></el-table-column>
-            <el-table-column label="操作" width="300px" >
+            <el-table-column label="操作" width="300px">
               <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-search" size="mini" @click="modifyRole(scope.row.id)">编辑</el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-search"
+                  size="mini"
+                  @click="modifyRole(scope.row.id)"
+                >编辑</el-button>
                 <el-button
                   type="danger"
                   icon="el-icon-delete"
@@ -89,9 +94,20 @@
       </el-row>
     </el-card>
     <!-- 添加角色 -->
-    <el-dialog title="添加角色" :visible.sync="addRoledialogVisible" width="30%" @close='handleAddRoleClosed'>
-      <el-form ref="addRoleForm" :rules="addRules" :model="addRoleForm" label-width="80px" size="mini">
-        <el-form-item label="id" prop="id" v-if='flag'>
+    <el-dialog
+      title="添加角色"
+      :visible.sync="addRoledialogVisible"
+      width="30%"
+      @close="handleAddRoleClosed"
+    >
+      <el-form
+        ref="addRoleForm"
+        :rules="addRules"
+        :model="addRoleForm"
+        label-width="80px"
+        size="mini"
+      >
+        <el-form-item label="id" prop="id" v-if="flag">
           <el-input v-model="addRoleForm.roleId" disabled></el-input>
         </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
@@ -192,19 +208,13 @@ export default {
     // 根据id删除指定的权限
     async removeTagById(role, rightId) {
       // 弹框提示用户是否要删除
-      const confirmResult = await this.$confirm(
-        '此操作将永久删除该文件, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch(err => err)
+      const confirmResult = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       if (confirmResult === 'confirm') {
-        const { data: res } = await this.$http.delete(
-          `roles/${role.id}/rights/${rightId}`
-        )
+        const { data: res } = await this.$http.delete(`roles/${role.id}/rights/${rightId}`)
         if (res.meta.status === 200) {
           role.children = res.data
           this.$message.success('删除成功')
@@ -223,7 +233,6 @@ export default {
       if (res.meta.status === 200) {
         // 把获取到的权限数据保存到data数据中
         this.rightList = res.data
-        // console.log(this.rightList)
         this.$message.success('获取权限数据成功')
       } else {
         this.$message.error('获取权限数据失败')
@@ -247,15 +256,9 @@ export default {
     },
     // 点击分配权限
     async allotRights() {
-      const keys = [
-        ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys()
-      ]
+      const keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()]
       const idStr = keys.join(',')
-      const { data: res } = await this.$http.post(
-        `roles/${this.roleId}/rights`,
-        { rids: idStr }
-      )
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids: idStr })
       if (res.meta.status === 200) {
         this.$message.success('用户权限更新成功')
         this.getRoleList()
